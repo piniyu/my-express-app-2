@@ -1,5 +1,5 @@
 import app from './app'
-import { db, collection, client, connectToDB, closeDB } from '~/src/data/db'
+import { db, userCollection, client, connectToDB, closeDB } from '~/src/data/db'
 const PORT = process.env.PORT || 3000
 
 connectToDB()

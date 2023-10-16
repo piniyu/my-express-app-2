@@ -18,9 +18,9 @@ const validate = (validations: ValidationChain[]) => {
   }
 }
 
-const validateRegister = validate([
+const validateAuthInput = validate([
   body('username').isLength({ min: 6, max: 12 }),
   body('password').isLength({ min: 8, max: 12 })
 ])
 
-export { validateRegister }
+export { validateAuthInput }

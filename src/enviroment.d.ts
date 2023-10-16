@@ -4,6 +4,7 @@ declare global {
       DB_URL?: string
       NODE_ENV: 'development' | 'production' | 'test'
       PORT?: string
+      SECRET?: string
     }
   }
 }

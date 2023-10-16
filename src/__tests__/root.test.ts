@@ -1,5 +1,5 @@
 import app from '~/src/app'
-import { ROUTES } from '~/src/route'
+import { ROUTES } from '~/src/routes/route'
 import request from 'supertest'
 
 describe('Test root', () => {

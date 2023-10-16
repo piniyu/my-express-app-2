@@ -1,17 +1,11 @@
-import express from 'express'
 import registerMiddleware from '~/src/middleware/auth/register'
+import loginMiddleware from '~/src/middleware/auth/login'
+import { Route } from '~/src/routes/type'
 
 export const ROUTES = {
   ROOT: '/',
-  REGISTER: '/register'
-}
-
-export type Handler = (req: express.Request, res: express.Response) => any
-
-export type Route = {
-  method: 'get' | 'post' | 'put' | 'delete' | 'patch'
-  url: string
-  middleware: ((req: express.Request, res: express.Response, next: express.NextFunction) => void)[]
+  REGISTER: '/register',
+  LOGIN: '/login'
 }
 
 export const routes: Route[] = [
@@ -29,5 +23,10 @@ export const routes: Route[] = [
     url: ROUTES.REGISTER,
     method: 'post',
     middleware: registerMiddleware
+  },
+  {
+    url: ROUTES.LOGIN,
+    method: 'post',
+    middleware: loginMiddleware
   }
 ]
