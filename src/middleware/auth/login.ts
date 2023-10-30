@@ -5,7 +5,7 @@ import { User } from '~/src/types/db'
 import { encodeJWT } from '~/src/utils/jwt'
 import { validateAuthInput } from '../validation'
 
-const handler: Handler<User> = async (req, res) => {
+const handler: Handler<{}, User> = async (req, res) => {
   try {
     const user = await userCollection.findOne({ username: req.body.username })
     if (!user) {

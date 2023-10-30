@@ -5,7 +5,7 @@ import { Handler } from '~/src/routes/type'
 import { User } from '~/src/types/db'
 import { encodeJWT, tokenCookieOption } from '~/src/utils/jwt'
 
-const handler: Handler<User> = async (req, res) => {
+const handler: Handler<{}, User> = async (req, res) => {
   try {
     const existingUser = await userCollection.findOne({ username: req.body.username })
     if (existingUser) {

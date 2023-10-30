@@ -1,11 +1,17 @@
 import registerMiddleware from '~/src/middleware/auth/register'
 import loginMiddleware from '~/src/middleware/auth/login'
+import createMiddleware from '~/src/middleware/create'
+import readMiddleware from '~/src/middleware/read'
 import { Route } from '~/src/routes/type'
 
 export const ROUTES = {
   ROOT: '/',
   REGISTER: '/register',
-  LOGIN: '/login'
+  LOGIN: '/login',
+  CREATE: '/create',
+  READ: '/read',
+  UPDATE: '/update',
+  DELETE: '/delete'
 }
 
 export const routes: Route[] = [
@@ -28,5 +34,11 @@ export const routes: Route[] = [
     url: ROUTES.LOGIN,
     method: 'post',
     middleware: loginMiddleware
-  }
+  },
+  {
+    url: ROUTES.CREATE,
+    method: 'post',
+    middleware: createMiddleware
+  },
+  { url: ROUTES.READ, method: 'get', middleware: readMiddleware }
 ]

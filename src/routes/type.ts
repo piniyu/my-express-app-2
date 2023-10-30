@@ -1,7 +1,7 @@
 import express from 'express'
 
-export type Handler<ReqBody = { [key: string]: string }> = (
-  req: express.Request<{}, {}, ReqBody>,
+export type Handler<Params = {}, ReqBody = { [key: string]: string }> = (
+  req: express.Request<Params, {}, ReqBody>,
   res: express.Response
 ) => any
 
