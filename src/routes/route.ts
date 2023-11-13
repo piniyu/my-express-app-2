@@ -2,6 +2,8 @@ import registerMiddleware from '~/src/middleware/auth/register'
 import loginMiddleware from '~/src/middleware/auth/login'
 import createMiddleware from '~/src/middleware/create'
 import readMiddleware from '~/src/middleware/read'
+import updateMiddleware from '~/src/middleware/update'
+import deleteMiddleware from '~/src/middleware/delete'
 import { Route } from '~/src/routes/type'
 
 export const ROUTES = {
@@ -40,5 +42,7 @@ export const routes: Route[] = [
     method: 'post',
     middleware: createMiddleware
   },
-  { url: ROUTES.READ, method: 'get', middleware: readMiddleware }
+  { url: ROUTES.READ, method: 'get', middleware: readMiddleware },
+  { url: ROUTES.UPDATE, method: 'put', middleware: updateMiddleware },
+  { url: ROUTES.DELETE, method: 'delete', middleware: deleteMiddleware }
 ]

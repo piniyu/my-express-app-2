@@ -1,8 +1,9 @@
 import express from 'express'
 
-export type Handler<Params = {}, ReqBody = { [key: string]: string }> = (
-  req: express.Request<Params, {}, ReqBody>,
-  res: express.Response
+export type Handler<Params = {}, ReqBody = { [key: string]: string }, ReqQuery = {}> = (
+  req: express.Request<Params, {}, ReqBody, ReqQuery>,
+  res: express.Response,
+  next: express.NextFunction
 ) => any
 
 export type Route = {

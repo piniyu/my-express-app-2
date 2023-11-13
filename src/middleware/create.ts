@@ -2,19 +2,19 @@ import { taskCollection } from '../data/db'
 import { Handler } from '../routes/type'
 import { Task } from '../types/db'
 import { decodeJWT } from '../utils/jwt'
+import { verifyJwt } from './jwt-validate'
 
-const handler: Handler<{}, Omit<Task, 'userId'> & { token: string }> = async (req, res) => {
+const handler: Handler<{}, Omit<Task, 'userId'>> = async (req, res) => {
   try {
-    const { token, title, description } = req.body
-    if (!token) {
-      return res.send('Require userId').status(400)
-    } else if (!title) {
+    const token = req.headers.authorization?.split(' ')[1]!
+    const { title, description } = req.body
+
+    if (!title) {
       return res.send('Title is required').status(400)
     }
-    const decode = decodeJWT(token)
-    if (!decode) {
-      return res.send('Invalid JWT token').status(400)
-    }
+
+    const decode = decodeJWT(token)!
+
     const { insertedId } = await taskCollection.insertOne({
       userId: decode.userId,
       title,
@@ -27,6 +27,6 @@ const handler: Handler<{}, Omit<Task, 'userId'> & { token: string }> = async (re
   }
 }
 
-const middleware = [handler]
+const middleware = [verifyJwt, handler]
 
 export default middleware

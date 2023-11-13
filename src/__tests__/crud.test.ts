@@ -4,7 +4,7 @@ import app from '../app'
 import { ROUTES } from '../routes/route'
 
 const TEST_ACCOUNT = {
-  username: 'lisa123',
+  username: 'lisa1234',
   password: '12345678'
 }
 
@@ -31,7 +31,7 @@ beforeAll(async () => {
   token = res.body.token
 })
 afterAll(async () => {
-  await taskCollection.deleteMany({})
+  // await taskCollection.deleteMany({})
   await closeDB()
 })
 
@@ -39,24 +39,26 @@ describe('Test CRUD methods', () => {
   test('Creating a task should response 200', async () => {
     const response = await request(app)
       .post(ROUTES.CREATE)
-      .send({ token, ...TASK_DATA })
+      .set('Authorization', `Bearer ${token}`)
+      .send(TASK_DATA)
 
     taskId = response.body.taskId
-
+    console.log(taskId)
     expect(response.statusCode).toBe(200)
     expect(response.body.taskId).toBeTruthy()
   })
 
   test('Reading all tasks should response 200', async () => {
-    const response = await request(app).get(ROUTES.READ).send({ token })
+    const response = await request(app).get(ROUTES.READ).set('Authorization', `Bearer ${token}`)
     expect(response.statusCode).toBe(200)
     expect(response.body.tasks).toHaveLength(1)
   })
 
   test('Reading a task by id should response 200', async () => {
     const response = await request(app)
-      .get(ROUTES.READ + `?id=${taskId}`)
-      .send({ token })
+      .get(ROUTES.READ)
+      .query({ id: taskId })
+      .set('Authorization', `Bearer ${token}`)
 
     expect(response.statusCode).toBe(200)
     expect(response.body.task).toBeTruthy()
@@ -65,6 +67,7 @@ describe('Test CRUD methods', () => {
   test('Updating a task by id should response 200', async () => {
     const response = await request(app)
       .put(ROUTES.UPDATE)
+      .set('Authorization', `Bearer ${token}`)
       .send({ taskId, ...New_TASK_DATA })
 
     expect(response.statusCode).toBe(200)
@@ -72,7 +75,10 @@ describe('Test CRUD methods', () => {
   })
 
   test('Delete a task by id', async () => {
-    const response = await request(app).delete(ROUTES.DELETE).send({ taskId })
+    const response = await request(app)
+      .delete(ROUTES.DELETE)
+      .query({ taskId })
+      .set('Authorization', `Bearer ${token}`)
 
     expect(response.statusCode).toBe(200)
     expect(response.body).toBeTruthy()

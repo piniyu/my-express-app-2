@@ -2,19 +2,17 @@ import { ObjectId } from 'mongodb'
 import { taskCollection } from '../data/db'
 import { Handler } from '../routes/type'
 import { decodeJWT } from '../utils/jwt'
+import { verifyJwt } from './jwt-validate'
 
-const handler: Handler<{ id?: string }, { token: string }> = async (req, res) => {
+const handler: Handler<{}, {}, { id?: string }> = async (req, res) => {
   try {
-    const params = req.params
-    const { token } = req.body
-    const decode = decodeJWT(token)
-    if (!decode) {
-      return res.send('Invalid JWT token').status(400)
-    }
+    const query = req.query
+    const token = req.headers.authorization?.split(' ')[1]!
 
-    if (params.id) {
-      console.log(params)
-      const objectId = new ObjectId(params.id)
+    const decode = decodeJWT(token)!
+
+    if (query.id) {
+      const objectId = new ObjectId(query.id)
       const task = await taskCollection.findOne({ _id: objectId })
       return res.send({ task }).status(200)
     }
@@ -26,6 +24,6 @@ const handler: Handler<{ id?: string }, { token: string }> = async (req, res) =>
   }
 }
 
-const middleware = [handler]
+const middleware = [verifyJwt, handler]
 
 export default middleware
